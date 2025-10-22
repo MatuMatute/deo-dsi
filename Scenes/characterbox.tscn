@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://bs1uvd55437px"]
+
+[ext_resource type="LabelSettings" uid="uid://bvwgv45jgjagv" path="res://Resources/LabelSettings/Character_info.tres" id="1_8wd1o"]
+[ext_resource type="Script" uid="uid://b0dq7sexcwfkk" path="res://Scripts/CharacterBox.cs" id="1_ehqcl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehqcl"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="CharacterBox" type="PanelContainer" node_paths=PackedStringArray("currentHP", "maximumHP", "currentSP", "maximumSP")]
+offset_right = 61.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ehqcl")
+script = ExtResource("1_ehqcl")
+currentHP = NodePath("StatsContainer/HPContainer/Current")
+maximumHP = NodePath("StatsContainer/HPContainer/Maximum")
+currentSP = NodePath("StatsContainer/SPContainer/Current")
+maximumSP = NodePath("StatsContainer/SPContainer/Maximum")
+
+[node name="StatsContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="HPContainer" type="HBoxContainer" parent="StatsContainer"]
+layout_mode = 2
+
+[node name="HP" type="Label" parent="StatsContainer/HPContainer"]
+layout_mode = 2
+text = "HP"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Current" type="Label" parent="StatsContainer/HPContainer"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Separator" type="Label" parent="StatsContainer/HPContainer"]
+layout_mode = 2
+text = "/"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Maximum" type="Label" parent="StatsContainer/HPContainer"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="SPContainer" type="HBoxContainer" parent="StatsContainer"]
+layout_mode = 2
+
+[node name="SP" type="Label" parent="StatsContainer/SPContainer"]
+layout_mode = 2
+text = "SP"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Current" type="Label" parent="StatsContainer/SPContainer"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Separator" type="Label" parent="StatsContainer/SPContainer"]
+layout_mode = 2
+text = "/"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Maximum" type="Label" parent="StatsContainer/SPContainer"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("1_8wd1o")
+
+[node name="Select" type="Button" parent="."]
+layout_mode = 2
+flat = true

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://mtof22h3d3q8"]
+
+[ext_resource type="PackedScene" uid="uid://chvrnv717tick" path="res://Scenes/godot.tscn" id="1_21x21"]
+[ext_resource type="Script" uid="uid://damr3pudxua1t" path="res://Scripts/Troop.cs" id="1_b26t8"]
+
+[resource]
+script = ExtResource("1_b26t8")
+EnemyTroop = [ExtResource("1_21x21"), ExtResource("1_21x21"), ExtResource("1_21x21")]

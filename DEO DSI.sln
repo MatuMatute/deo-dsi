@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEO DSI", "DEO DSI.csproj", "{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{EE1FBB90-C2F4-4FC3-9673-992A26F4282E}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal
