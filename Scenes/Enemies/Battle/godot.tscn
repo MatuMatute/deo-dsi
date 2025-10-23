@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://chvrnv717tick"]
 
-[ext_resource type="Texture2D" uid="uid://qlm126vw7xxn" path="res://Assets/Battle/Enemies/godot.png" id="1_haaha"]
-[ext_resource type="Script" uid="uid://bonbbkjfoyjdc" path="res://Scripts/Enemy.cs" id="2_vvhan"]
+[ext_resource type="Texture2D" uid="uid://qlm126vw7xxn" path="res://Assets/Battle/Enemies/godot.png" id="1_xaqu4"]
+[ext_resource type="Script" uid="uid://bonbbkjfoyjdc" path="res://Scripts/Enemy.cs" id="2_p1dmq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_haaha"]
 bg_color = Color(0.56078434, 0, 0, 1)
@@ -12,18 +12,18 @@ bg_color = Color(0.36320862, 0.6923496, 0.2846982, 1)
 [node name="Godot" type="TextureRect"]
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("1_haaha")
-script = ExtResource("2_vvhan")
+texture = ExtResource("1_xaqu4")
+script = ExtResource("2_p1dmq")
 name = "Godot"
 maxHP = 4
 attack = 2
-speed = 1
+speed = 3
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 4.0
+offset_bottom = 1.0
 grow_horizontal = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_haaha")
 theme_override_styles/fill = SubResource("StyleBoxFlat_vvhan")

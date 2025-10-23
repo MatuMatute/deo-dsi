@@ -1,38 +1,19 @@
-[gd_scene load_steps=13 format=3 uid="uid://kdmraku2lnym"]
+[gd_scene load_steps=14 format=3 uid="uid://kdmraku2lnym"]
 
 [ext_resource type="Texture2D" uid="uid://cphhjtmuy44sc" path="res://Assets/Battle/Test.png" id="1_w7k78"]
 [ext_resource type="Script" uid="uid://b4im7qn4ubp3v" path="res://Scripts/Battle.cs" id="1_ww2ai"]
-[ext_resource type="Shader" uid="uid://gajv6marb0cm" path="res://Shaders/kaleidoscope.gdshader" id="2_f6xt6"]
-[ext_resource type="Resource" uid="uid://mtof22h3d3q8" path="res://Resources/Encounters/Godot.tres" id="2_ww2ai"]
-[ext_resource type="LabelSettings" uid="uid://cypn2mie4f5be" path="res://Resources/LabelSettings/dialog_label.tres" id="3_1otgo"]
+[ext_resource type="Resource" uid="uid://dao7mj5b1x0ft" path="res://Resources/Encounters/IceGodotx2.tres" id="2_pd5xk"]
 [ext_resource type="FontFile" uid="uid://ceyemwf1ca5ar" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="3_1ruyk"]
+[ext_resource type="Shader" uid="uid://byqgjkwf6uwwu" path="res://Shaders/sine_wave.gdshader" id="4_f6xt6"]
+[ext_resource type="PackedScene" uid="uid://d21l48sf31pkd" path="res://Scenes/controlBox.tscn" id="4_pd5xk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ww2ai"]
-shader = ExtResource("2_f6xt6")
-shader_parameter/resolution = Vector2(960, 540)
-shader_parameter/slices = 12.0
-shader_parameter/speed = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1otgo"]
-bg_color = Color(0, 0, 0, 1)
+shader = ExtResource("4_f6xt6")
+shader_parameter/frequency = 60.0
+shader_parameter/amplitude = 0.005
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ruyk"]
 bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Animation" id="Animation_1otgo"]
-resource_name = "Command_show"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("BottomMargin:theme_override_constants/margin_right")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-96, 16]
-}
 
 [sub_resource type="Animation" id="Animation_pd5xk"]
 length = 0.001
@@ -46,28 +27,101 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [16]
+"values": [-96]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BottomMargin:theme_override_constants/margin_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-96]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera:zoom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_f6xt6"]
+resource_name = "CharacterShow"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BottomMargin:theme_override_constants/margin_left")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-96, 16]
+}
+
+[sub_resource type="Animation" id="Animation_1otgo"]
+resource_name = "CommandShow"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BottomMargin:theme_override_constants/margin_right")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-96, 16]
+}
+
+[sub_resource type="Animation" id="Animation_ww2ai"]
+resource_name = "Start"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(20, 20), Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_f6xt6"]
 _data = {
-&"Command_show": SubResource("Animation_1otgo"),
-&"RESET": SubResource("Animation_pd5xk")
+&"CharacterShow": SubResource("Animation_f6xt6"),
+&"CommandShow": SubResource("Animation_1otgo"),
+&"RESET": SubResource("Animation_pd5xk"),
+&"Start": SubResource("Animation_ww2ai")
 }
 
-[node name="Battle" type="CanvasLayer" node_paths=PackedStringArray("enemyContainer", "playerContainer")]
+[node name="Battle" type="CanvasLayer" node_paths=PackedStringArray("controlBox", "enemyContainer", "playerContainer", "uiAnimations")]
 layer = 2
+follow_viewport_enabled = true
 script = ExtResource("1_ww2ai")
+controlBox = NodePath("ControlBox")
 enemyContainer = NodePath("EnemyContainer")
 playerContainer = NodePath("BottomMargin/PlayerContainer")
-Troop = ExtResource("2_ww2ai")
+uiAnimations = NodePath("UIAnimation")
+Troop = ExtResource("2_pd5xk")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(480, 270)
 texture = ExtResource("1_w7k78")
 
 [node name="Shader" type="ColorRect" parent="."]
-visible = false
 material = SubResource("ShaderMaterial_ww2ai")
 anchors_preset = 15
 anchor_right = 1.0
@@ -93,35 +147,15 @@ anchor_bottom = 1.0
 offset_top = -160.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/margin_left = 16
+theme_override_constants/margin_left = -96
 theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
+theme_override_constants/margin_right = -96
 theme_override_constants/margin_bottom = 16
 
 [node name="PlayerContainer" type="VBoxContainer" parent="BottomMargin"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-
-[node name="ControlBox" type="PanelContainer" parent="BottomMargin"]
-custom_minimum_size = Vector2(480, 128)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_1otgo")
-
-[node name="ControlMargin" type="MarginContainer" parent="BottomMargin/ControlBox"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="Dialog" type="Label" parent="BottomMargin/ControlBox/ControlMargin"]
-custom_minimum_size = Vector2(464, 97)
-layout_mode = 2
-label_settings = ExtResource("3_1otgo")
-autowrap_mode = 3
 
 [node name="CommandsPanel" type="PanelContainer" parent="BottomMargin"]
 layout_mode = 2
@@ -156,10 +190,24 @@ theme_override_fonts/font = ExtResource("3_1ruyk")
 text = "FLEE"
 flat = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="ControlBox" parent="." instance=ExtResource("4_pd5xk")]
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.73300004
+anchor_right = 0.25
+anchor_bottom = 0.73300004
+offset_top = 0.17999268
+offset_right = 480.0
+offset_bottom = 128.18
+pivot_offset = Vector2(240, 64)
+
+[node name="UIAnimation" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_f6xt6")
 }
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(480, 270)
 
 [node name="Version" type="Label" parent="."]
 anchors_preset = 3
@@ -172,4 +220,6 @@ offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "0.1.0"
+text = "0.1.1"
+
+[connection signal="animation_finished" from="UIAnimation" to="." method="UIAnimationFinished"]

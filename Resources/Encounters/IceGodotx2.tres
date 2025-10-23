@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://dao7mj5b1x0ft"]
+
+[ext_resource type="PackedScene" uid="uid://chvrnv717tick" path="res://Scenes/Enemies/Battle/godot.tscn" id="1_we4uq"]
+[ext_resource type="PackedScene" uid="uid://cffufaeafew0s" path="res://Scenes/Enemies/Battle/iceEntity.tscn" id="2_kb71f"]
+[ext_resource type="Script" uid="uid://damr3pudxua1t" path="res://Scripts/Troop.cs" id="3_co5xq"]
+
+[resource]
+script = ExtResource("3_co5xq")
+EnemyTroop = [ExtResource("1_we4uq"), ExtResource("2_kb71f"), null, null, null, null]

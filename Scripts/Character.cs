@@ -1,10 +1,10 @@
 using Godot;
 
-public partial class Character : Node
+public partial class Character : Battler
 {
     private string name;
     private Color color;
-    private int level;
+    private byte level;
     private int experience;
     private int maxExperience;
     private int hp;
@@ -47,8 +47,10 @@ public partial class Character : Node
         }
     }
 
+    public string GetBattlerName() { return name; }
     public int GetHP() { return hp; }
     public int GetMaxHP() { return maxHP; }
     public int GetSP() { return sp; }
     public int GetMaxSP() { return maxSP; }
+    public override int GetSpeed() { return speed; }
 }

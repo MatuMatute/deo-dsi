@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Enemy : TextureRect
+public partial class Enemy : Battler
 {
     [Export]
     private string name;
@@ -44,4 +44,7 @@ public partial class Enemy : TextureRect
             hp = 0;
         }
     }
+
+    public string GetBattlerName() { return name; }
+    public override int GetSpeed() { return speed; }
 }
