@@ -8,7 +8,7 @@ public partial class Global : Node
 
     public override void _Ready()
     {
-        deo = new Character("DEO", Color.Color8(0, 0, 255, 255), 10, 10, 2, 0, 2, 0, 20);
+        deo = new Character("DEO", Color.Color8(0, 0, 255, 255), 10, 10, 2, 0, 10, 0, 20);
         Party[0] = deo;
         Instance = this;
     }

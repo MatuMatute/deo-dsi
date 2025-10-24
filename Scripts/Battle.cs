@@ -55,8 +55,6 @@ public partial class Battle : CanvasLayer
         {
             uiAnimations.Play("CharacterShow");
             controlBox.Grow();
-            actionOrder = SortActions();
-            Action();
         }
     }
 
@@ -82,9 +80,13 @@ public partial class Battle : CanvasLayer
     
     private void Action()
     {
+        actionOrder = SortActions();
+
         if (actionOrder[currentAction] is Character)
         {
             GD.Print("Turno jugador");
+            uiAnimations.Play("CommandShow");
+            actionOrder[currentAction].Action(controlBox);
         }
 
         if (actionOrder[currentAction] is Enemy)

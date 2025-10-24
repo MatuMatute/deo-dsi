@@ -47,6 +47,11 @@ public partial class Character : Battler
         }
     }
 
+    public override void Action(ControlBox controlBox)
+    {
+        controlBox.AddDialog(name + " está pensando en qué hacer...", true);
+    }
+
     public string GetBattlerName() { return name; }
     public int GetHP() { return hp; }
     public int GetMaxHP() { return maxHP; }
