@@ -5,7 +5,7 @@ public partial class ControlBox : PanelContainer
 {
     [Signal]
     public delegate void DialogBoxFinishedEventHandler();
-    enum Mode {none, sign, dialog, item, skill};
+    enum Mode {sign, dialog, item, skill};
     enum State {ready, writing, finished}
     [Export]
     private Label dialogLabel;
@@ -14,13 +14,12 @@ public partial class ControlBox : PanelContainer
     private const float tweenWritingSpeed = 0.05f;
     private const string battleStartMessage = "la batalla comienza";
     private Tween mainTween;
-    private Mode currentMode = Mode.none;
+    private Mode currentMode;
     private State currentState;
     private string[] dialogQueue = [];
 
     public override void _Ready()
     {
-        AddDialog(battleStartMessage, false);
         Set(PropertyName.Scale, new Vector2(0.0f, 0.0f));
         dialogLabel.Set("visible_characters", 0);
     }
@@ -33,10 +32,6 @@ public partial class ControlBox : PanelContainer
                 if (!dialogQueue.IsEmpty())
                 {
                     ShowDialog();
-                }
-                else
-                {
-                    dialogLabel.Hide();
                 }
                 break;
             case Mode.dialog:
@@ -53,7 +48,6 @@ public partial class ControlBox : PanelContainer
                         {
                             dialogLabel.Hide();
                             EmitSignal(SignalName.DialogBoxFinished);
-                            SetMode(Mode.none);
                         }
                         break;
                     case State.writing:
@@ -79,7 +73,7 @@ public partial class ControlBox : PanelContainer
         mainTween = CreateTween();
         mainTween.TweenProperty(this, "scale", new Vector2(1.0f, 1.0f), 1.0f);
         mainTween.Connect("finished", new Callable(mainTween, "kill"), 4);
-        mainTween.Connect("finished", Callable.From(() => SetMode(Mode.dialog)), 4);
+        mainTween.Connect("finished", Callable.From(() => AddDialog(battleStartMessage, false)), 4);
         mainTween.Play();
     }
 
@@ -118,6 +112,7 @@ public partial class ControlBox : PanelContainer
     {
         Mode previousMode = currentMode;
         currentMode = mode;
+        GD.Print(currentMode);
 
         if (currentMode == Mode.dialog)
         {

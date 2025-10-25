@@ -21,11 +21,14 @@ public partial class Enemy : Battler
     private StatusEffect[] statusEffects = new StatusEffect[4];
 
     private ProgressBar HealthBar;
+    private Button selectButton;
 
     public override void _Ready()
     {
         hp = maxHP;
         sp = maxSP;
+        selectButton = GetNode<Button>("Select");
+        CannotBeSelected();
         HealthBar = GetNode<ProgressBar>("HealthBar");
         HealthBar.Set("max_value", maxHP);
         HealthBar.Set("value", hp);
@@ -43,6 +46,17 @@ public partial class Enemy : Battler
         {
             hp = 0;
         }
+        HealthBar.Set("value", hp);
+    }
+
+    public void CanBeSelected()
+    {
+        selectButton.Set("visible", true);
+    }
+
+    public void CannotBeSelected()
+    {
+        selectButton.Set("visible", false);
     }
 
     public string GetBattlerName() { return name; }

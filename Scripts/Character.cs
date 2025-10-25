@@ -16,6 +16,7 @@ public partial class Character : Battler
     private int speed;
     private StatusEffect[] statusEffects = new StatusEffect[4];
     private Skill[] skills = new Skill[10];
+    private CharacterBox characterBox;
 
     public Character(string name, Color color, int hp, int sp, int attack, int defense, int speed, int experience, int maxExperience)
     {
@@ -45,11 +46,20 @@ public partial class Character : Battler
         {
             hp = 0;
         }
+
+        characterBox.UpdateLabels(this);
     }
 
-    public override void Action(ControlBox controlBox)
+    public override void Action(ControlBox controlBox, PlayerMargin playerMargin)
     {
         controlBox.AddDialog(name + " está pensando en qué hacer...", true);
+        playerMargin.ShowCommands();
+    }
+
+    public void AssignBox(CharacterBox characterBox)
+    {
+        this.characterBox = characterBox;
+        this.characterBox.UpdateLabels(this);
     }
 
     public string GetBattlerName() { return name; }

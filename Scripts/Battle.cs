@@ -8,13 +8,11 @@ public partial class Battle : CanvasLayer
     [Export]
     private HBoxContainer enemyContainer;
     [Export]
-    private VBoxContainer playerContainer;
+    private PlayerMargin playerMargin;
     [Export]
     private AnimationPlayer uiAnimations;
     [Export]
     private Troop Troop;
-    private readonly PackedScene characterBox = ResourceLoader.Load<PackedScene>("res://Scenes/characterbox.tscn");
-    private Character[] Party;
     private Enemy[] enemyTroop;
     private Battler[] actionOrder;
     private ushort turn;
@@ -22,7 +20,7 @@ public partial class Battle : CanvasLayer
 
     public override void _Ready()
     {
-        Party = Global.Instance.GetParty();
+        playerMargin.PassControlBox(controlBox);
         PackedScene[] enemyScenes = Troop.GetEnemyTroop();
         enemyTroop = new Enemy[enemyScenes.Length];
 
@@ -31,18 +29,9 @@ public partial class Battle : CanvasLayer
             if (enemyScenes[i] != null)
             {
                 Enemy enemy = enemyScenes[i].Instantiate() as Enemy;
+                enemy.AddToGroup("Enemies");
                 enemyTroop[i] = enemy;
                 enemyContainer.AddChild(enemy);
-            }
-        }
-
-        foreach (Character character in Party)
-        {
-            if (character != null)
-            {
-                CharacterBox currentBox = characterBox.Instantiate() as CharacterBox;
-                currentBox.SetCharacter(character);
-                playerContainer.AddChild(currentBox);
             }
         }
 
@@ -61,7 +50,7 @@ public partial class Battle : CanvasLayer
     private Battler[] SortActions()
     {
         Battler[] actionOrganizer;
-        actionOrganizer = Party;
+        actionOrganizer = Global.Instance.GetParty();
         actionOrganizer = actionOrganizer.Concat(enemyTroop).ToArray();
         actionOrganizer = actionOrganizer.Where(b => b != null).ToArray();
 
@@ -77,16 +66,15 @@ public partial class Battle : CanvasLayer
         actionOrganizer = actionOrganizer.Where(b => b != null).ToArray();
         return actionOrganizer;
     }
-    
-    private void Action()
+
+    private void BattlerChoice()
     {
         actionOrder = SortActions();
 
         if (actionOrder[currentAction] is Character)
         {
             GD.Print("Turno jugador");
-            uiAnimations.Play("CommandShow");
-            actionOrder[currentAction].Action(controlBox);
+            actionOrder[currentAction].Action(controlBox, playerMargin);
         }
 
         if (actionOrder[currentAction] is Enemy)

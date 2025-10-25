@@ -1,0 +1,130 @@
+[gd_scene load_steps=8 format=3 uid="uid://w7awilurk32n"]
+
+[ext_resource type="Script" uid="uid://u56j2ofu0na" path="res://Scenes/PlayerMargin.cs" id="1_q3w7d"]
+[ext_resource type="FontFile" uid="uid://ceyemwf1ca5ar" path="res://Assets/Fonts/VCR_OSD_MONO_1.001.ttf" id="2_w82rk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ruyk"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_q3w7d"]
+resource_name = "ShowCommands"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_constants/margin_right")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-96, 16]
+}
+
+[sub_resource type="Animation" id="Animation_w82rk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_constants/margin_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-96]
+}
+
+[sub_resource type="Animation" id="Animation_3h72o"]
+resource_name = "HideCommands"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_constants/margin_right")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [16, -96]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3h72o"]
+_data = {
+&"HideCommands": SubResource("Animation_3h72o"),
+&"RESET": SubResource("Animation_w82rk"),
+&"ShowCommands": SubResource("Animation_q3w7d")
+}
+
+[node name="PlayerMargin" type="MarginContainer" node_paths=PackedStringArray("playerContainer", "backButton", "animationPlayer")]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = -96
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = -96
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_q3w7d")
+playerContainer = NodePath("PlayerContainer")
+backButton = NodePath("CommandsPanel/CommandsContainer/Back")
+animationPlayer = NodePath("PlayerAnimations")
+
+[node name="PlayerContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="CommandsPanel" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ruyk")
+
+[node name="CommandsContainer" type="VBoxContainer" parent="CommandsPanel"]
+layout_mode = 2
+
+[node name="Attack" type="Button" parent="CommandsPanel/CommandsContainer" groups=["MainCommands"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w82rk")
+text = "ATTACK"
+flat = true
+
+[node name="Skills" type="Button" parent="CommandsPanel/CommandsContainer" groups=["MainCommands"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w82rk")
+text = "SKILLS"
+flat = true
+
+[node name="Items" type="Button" parent="CommandsPanel/CommandsContainer" groups=["MainCommands"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w82rk")
+text = "ITEMS"
+flat = true
+
+[node name="Flee" type="Button" parent="CommandsPanel/CommandsContainer" groups=["MainCommands"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w82rk")
+text = "FLEE"
+flat = true
+
+[node name="Back" type="Button" parent="CommandsPanel/CommandsContainer"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w82rk")
+text = "BACK"
+flat = true
+
+[node name="PlayerAnimations" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3h72o")
+}
+
+[connection signal="pressed" from="CommandsPanel/CommandsContainer/Attack" to="." method="attackButtonPressed"]
+[connection signal="pressed" from="CommandsPanel/CommandsContainer/Back" to="." method="backButtonPressed"]
+[connection signal="animation_finished" from="PlayerAnimations" to="." method="animationFinished"]
