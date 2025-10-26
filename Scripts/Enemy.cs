@@ -1,7 +1,13 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 
 public partial class Enemy : Battler
 {
+    [Signal]
+    public delegate void EnemySelectedEventHandler(Enemy enemy);
+    [Signal]
+    public delegate void ActionFinishedEventHandler();
     [Export]
     private string name;
     [ExportCategory("😈 Stats 😈")]
@@ -17,6 +23,14 @@ public partial class Enemy : Battler
     private int defense { get; set; }
     [Export]
     private int speed { get; set; }
+    [Export]
+    private int[] elementWeakness = new int[4];
+    [Export]
+    private Skill[] skills = new Skill[4];
+    [Export]
+    private AnimatedSprite2D effectSprite;
+    [Export]
+    private AnimationPlayer animations;
 
     private StatusEffect[] statusEffects = new StatusEffect[4];
 
@@ -34,9 +48,9 @@ public partial class Enemy : Battler
         HealthBar.Set("value", hp);
     }
 
-    public void Damage(int amount)
+    public int Damage(int amount, int elementIndex)
     {
-        int damage = amount - defense;
+        int damage = (amount * elementWeakness[elementIndex]) - defense;
 
         if (hp > damage)
         {
@@ -46,7 +60,33 @@ public partial class Enemy : Battler
         {
             hp = 0;
         }
+
         HealthBar.Set("value", hp);
+        return damage;
+    }
+
+    public async void Action(ControlBox controlBox)
+    {
+        Character[] Party = Global.Instance.GetParty().Where(b => b != null).ToArray();;
+
+        if (skills.Length > 1)
+        {
+
+        }
+        else
+        {
+            if (Party.Length > 1)
+            {
+                Character target = Party.MinBy(b => b.GetHP());
+                skills[0].Effect(controlBox, this, target);
+            }
+            else
+            {
+                skills[0].Effect(controlBox, this, Party[0]);
+                await ToSignal(skills[0], "Finished");
+                EmitSignal("ActionFinished");
+            }
+        }
     }
 
     public void CanBeSelected()
@@ -59,6 +99,24 @@ public partial class Enemy : Battler
         selectButton.Set("visible", false);
     }
 
-    public string GetBattlerName() { return name; }
+    public AnimatedSprite2D PlayEffect(SpriteFrames spriteFrames)
+    {
+        effectSprite.Set("sprite_frames", spriteFrames);
+        effectSprite.Play();
+        return effectSprite;
+    }
+
+    private void EffectFinished()
+    {
+        effectSprite.SpriteFrames = null;
+        animations.Play("damaged");
+    }
+
+    private void IsSelected()
+    {
+        EmitSignal("EnemySelected", this);
+    }
+
+    public override string GetBattlerName() { return name; }
     public override int GetSpeed() { return speed; }
 }

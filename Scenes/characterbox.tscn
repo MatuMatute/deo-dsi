@@ -6,7 +6,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehqcl"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="CharacterBox" type="PanelContainer" node_paths=PackedStringArray("currentHP", "maximumHP", "currentSP", "maximumSP")]
+[node name="CharacterBox" type="PanelContainer" node_paths=PackedStringArray("currentHP", "maximumHP", "currentSP", "maximumSP", "selectButton")]
 offset_right = 61.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ehqcl")
@@ -15,6 +15,7 @@ currentHP = NodePath("StatsContainer/HPContainer/Current")
 maximumHP = NodePath("StatsContainer/HPContainer/Maximum")
 currentSP = NodePath("StatsContainer/SPContainer/Current")
 maximumSP = NodePath("StatsContainer/SPContainer/Maximum")
+selectButton = NodePath("Select")
 
 [node name="StatsContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b8s23241aufer"]
+
+[ext_resource type="Script" uid="uid://bw3ofinq5ek6g" path="res://Scripts/Attack.cs" id="1_88lia"]
+[ext_resource type="SpriteFrames" uid="uid://bqb0lrcyy3pc4" path="res://Resources/Skills/SpriteFrames/explosion.tres" id="1_v7f5h"]
+
+[resource]
+script = ExtResource("1_88lia")
+name = "Attack"
+tier = "I"
+animation = ExtResource("1_v7f5h")

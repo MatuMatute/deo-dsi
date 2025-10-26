@@ -2,12 +2,19 @@ using Godot;
 
 public partial class Skill : Resource
 {
-    private string name;
-    private int power;
-    private int cost;
-    private AnimatedSprite2D animation;
-    virtual public void Effect()
-    {
-        
-    }
+    [Signal]
+    public delegate void FinishedEventHandler();
+    [Export]
+    protected string name;
+    [Export]
+    protected string tier;
+    [Export]
+    protected int power;
+    [Export]
+    protected int element;
+    [Export]
+    protected int cost;
+    [Export]
+    protected SpriteFrames animation;
+    virtual public async void Effect(ControlBox controlBox, Battler user, Battler target) {}
 }

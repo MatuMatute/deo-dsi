@@ -16,9 +16,12 @@ public partial class Character : Battler
     private int speed;
     private StatusEffect[] statusEffects = new StatusEffect[4];
     private Skill[] skills = new Skill[10];
+    private int[] elementWeakness = new int[4];
     private CharacterBox characterBox;
+    private AnimationPlayer cameraAnimations;
+    
 
-    public Character(string name, Color color, int hp, int sp, int attack, int defense, int speed, int experience, int maxExperience)
+    public Character(string name, Color color, int hp, int sp, int attack, int defense, int speed, int experience, int maxExperience, int[] elementWeakness)
     {
         this.name = name;
         this.color = color;
@@ -32,11 +35,13 @@ public partial class Character : Battler
         level = 1;
         this.experience = experience;
         this.maxExperience = maxExperience;
+        this.elementWeakness = elementWeakness;
+        skills[0] = ResourceLoader.Load<Skill>("res://Resources/Skills/Attack.tres");
     }
 
-    public void Damage(int amount)
+    public int Damage(int amount, int elementIndex)
     {
-        int damage = amount - defense;
+        int damage = (amount * elementWeakness[elementIndex]) - defense;
 
         if (hp > damage)
         {
@@ -48,24 +53,36 @@ public partial class Character : Battler
         }
 
         characterBox.UpdateLabels(this);
+        return damage;
     }
 
-    public override void Action(ControlBox controlBox, PlayerMargin playerMargin)
+    public void Action(ControlBox controlBox, PlayerMargin playerMargin)
     {
         controlBox.AddDialog(name + " está pensando en qué hacer...", true);
+        playerMargin.SetCurrentCharacter(this);
         playerMargin.ShowCommands();
     }
 
     public void AssignBox(CharacterBox characterBox)
     {
         this.characterBox = characterBox;
+        this.characterBox.HideButton();
         this.characterBox.UpdateLabels(this);
     }
 
-    public string GetBattlerName() { return name; }
+    public void PlayCameraAnimation(StringName animName)
+    {
+        cameraAnimations.Play(animName);
+    }
+
+    public void SetUIAnimations(AnimationPlayer uiAnimation) { cameraAnimations = uiAnimation; }
+
+    public override string GetBattlerName() { return name; }
     public int GetHP() { return hp; }
     public int GetMaxHP() { return maxHP; }
     public int GetSP() { return sp; }
     public int GetMaxSP() { return maxSP; }
+    public override int GetAttack() { return attack; }
     public override int GetSpeed() { return speed; }
+    public Skill GetSkill(int index) { return skills[index]; }
 }

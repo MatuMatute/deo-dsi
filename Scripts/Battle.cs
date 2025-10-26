@@ -30,6 +30,8 @@ public partial class Battle : CanvasLayer
             {
                 Enemy enemy = enemyScenes[i].Instantiate() as Enemy;
                 enemy.AddToGroup("Enemies");
+                enemy.Connect("EnemySelected", new Callable(playerMargin, "ExecuteAction"));
+                enemy.Connect("ActionFinished", new Callable(this, "NextAction"));
                 enemyTroop[i] = enemy;
                 enemyContainer.AddChild(enemy);
             }
@@ -54,16 +56,8 @@ public partial class Battle : CanvasLayer
         actionOrganizer = actionOrganizer.Concat(enemyTroop).ToArray();
         actionOrganizer = actionOrganizer.Where(b => b != null).ToArray();
 
-        for (int i = 0; i < actionOrganizer.Length - 1; i++)
-        {
-            if (actionOrganizer[i].GetSpeed() < actionOrganizer[i + 1].GetSpeed())
-            {
-                actionOrganizer = actionOrganizer.Append(actionOrganizer[i]).ToArray();
-                actionOrganizer[i] = null;
-            }
-        }
-        
-        actionOrganizer = actionOrganizer.Where(b => b != null).ToArray();
+        actionOrganizer = actionOrganizer.OrderByDescending(b => b.GetSpeed()).ToArray();
+
         return actionOrganizer;
     }
 
@@ -73,13 +67,28 @@ public partial class Battle : CanvasLayer
 
         if (actionOrder[currentAction] is Character)
         {
-            GD.Print("Turno jugador");
-            actionOrder[currentAction].Action(controlBox, playerMargin);
+            Character character = actionOrder[currentAction] as Character;
+            character.Action(controlBox, playerMargin);
+            playerMargin.PassUIAnimations(uiAnimations);
         }
 
         if (actionOrder[currentAction] is Enemy)
         {
-            GD.Print("Turno enemigo");
+            Enemy enemy = actionOrder[currentAction] as Enemy;
+            enemy.Action(controlBox);
+        }
+    }
+
+    private void NextAction()
+    {
+        if (currentAction < actionOrder.Length)
+        {
+            currentAction++;
+        }
+        else
+        {
+            turn++;
+            currentAction = 0;
         }
     }
 }

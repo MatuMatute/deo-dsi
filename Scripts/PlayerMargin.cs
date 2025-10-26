@@ -1,8 +1,9 @@
-using System;
 using Godot;
 
 public partial class PlayerMargin : MarginContainer
 {
+    [Signal]
+    public delegate void ActionFinishedEventHandler();
     enum Transition { none, back, commands }; 
     [Export]
     private VBoxContainer playerContainer;
@@ -11,15 +12,15 @@ public partial class PlayerMargin : MarginContainer
     [Export]
     private AnimationPlayer animationPlayer;
     private readonly PackedScene characterBox = ResourceLoader.Load<PackedScene>("res://Scenes/characterbox.tscn");
-    private Character[] Party;
+    private Character currentCharacter;
+    private Skill currentSkill;
     private Transition transition;
     private ControlBox controlBox;
+    private AnimationPlayer cameraAnimation;
 
     public override void _Ready()
     {
-        Party = Global.Instance.GetParty();
-
-        foreach (Character character in Party)
+        foreach (Character character in Global.Instance.GetParty())
         {
             if (character != null)
             {
@@ -50,6 +51,20 @@ public partial class PlayerMargin : MarginContainer
         this.transition = (Transition)transition;
     }
 
+    public void ActionHasFinished()
+    {
+        EmitSignal("ActionFinished");
+    }
+    
+    private async void ExecuteAction(Enemy enemy)
+    {
+        SlideBack(0);
+        GetTree().CallGroup("Enemies", "CannotBeSelected");
+        currentSkill.Effect(controlBox, currentCharacter, enemy);
+        await ToSignal(currentSkill, "Finished");
+        EmitSignal("ActionFinished");
+    }
+
     private void animationFinished(StringName animName)
     {
         if (animName == "HideCommands")
@@ -70,14 +85,20 @@ public partial class PlayerMargin : MarginContainer
     {
         SlideBack(1);
         GetTree().CallGroup("Enemies", "CanBeSelected");
+        currentSkill = currentCharacter.GetSkill(0);
         controlBox.AddDialog("To which enemy?", true);
     }
 
     private void backButtonPressed()
     {
         SlideBack(2);
+        currentSkill = null;
         GetTree().CallGroup("Enemies", "CannotBeSelected");
     }
-    
+    public void SetCurrentCharacter(Character character) { currentCharacter = character; }
     public void PassControlBox(ControlBox controlBox) { this.controlBox = controlBox; }
+    public void PassUIAnimations(AnimationPlayer uiAnimations)
+    {
+        currentCharacter.SetUIAnimations(uiAnimations); 
+    }
 }

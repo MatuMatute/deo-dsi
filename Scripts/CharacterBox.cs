@@ -10,6 +10,8 @@ public partial class CharacterBox : PanelContainer
     private Label currentSP;
     [Export]
     private Label maximumSP;
+    [Export]
+    private Button selectButton;
 
     public void UpdateLabels(Character character)
     {
@@ -18,4 +20,7 @@ public partial class CharacterBox : PanelContainer
         currentSP.Set("text", character.GetSP().ToString());
         maximumSP.Set("text", character.GetMaxSP().ToString());
     }
+
+    public void ShowButton() { selectButton.Set("visible", true); }
+    public void HideButton() { selectButton.Set("visible", false); }
 }
