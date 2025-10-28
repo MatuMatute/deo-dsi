@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Godot;
 
 public partial class Character : Battler
@@ -16,7 +18,8 @@ public partial class Character : Battler
     private int speed;
     private StatusEffect[] statusEffects = new StatusEffect[4];
     private Skill[] skills = new Skill[10];
-    private int[] elementWeakness = new int[4];
+    // [No elemental, Fuego, Agua, Aire, Tierra]
+    private int[] elementWeakness = new int[5];
     private CharacterBox characterBox;
     private AnimationPlayer cameraAnimations;
     
@@ -39,9 +42,12 @@ public partial class Character : Battler
         skills[0] = ResourceLoader.Load<Skill>("res://Resources/Skills/Attack.tres");
     }
 
-    public int Damage(int amount, int elementIndex)
+    public void Damage(int amount, int elementIndex, ControlBox controlBox)
     {
         int damage = (amount * elementWeakness[elementIndex]) - defense;
+
+        if (damage > 0) { controlBox.AddDialog(name + $" receives {damage} points of damage!", false); }
+        else { controlBox.AddDialog(name + " received no damage!", false); }
 
         if (hp > damage)
         {
@@ -50,10 +56,29 @@ public partial class Character : Battler
         else
         {
             hp = 0;
+            controlBox.AddDialog(name + " has been defeated!", false);
+            ApplyStatusEffect(GD.Load<PackedScene>("res://Scenes/StatusEffects/death.tscn").Instantiate() as StatusEffect);
         }
 
         characterBox.UpdateLabels(this);
-        return damage;
+    }
+
+    public void ApplyStatusEffect(StatusEffect statusEffect)
+    {
+        if (Array.Exists(statusEffects, s => s == null))
+        {
+            int index = Array.FindIndex(statusEffects, s => s == null);
+            statusEffects[index] = statusEffect;
+        }
+        else
+        {
+            int index = Array.FindIndex(statusEffects, s => s == statusEffects.MinBy(s => s.GetPriority()));
+            if (statusEffect.GetPriority() >= statusEffects[index].GetPriority())
+            {
+                statusEffects[index] = statusEffect;
+            }
+        }
+        characterBox.UpdateStatusEffects(statusEffects);
     }
 
     public void Action(ControlBox controlBox, PlayerMargin playerMargin)
@@ -70,9 +95,10 @@ public partial class Character : Battler
         this.characterBox.UpdateLabels(this);
     }
 
-    public void PlayCameraAnimation(StringName animName)
+    public AnimationPlayer PlayCameraAnimation(StringName animName)
     {
         cameraAnimations.Play(animName);
+        return cameraAnimations;
     }
 
     public void SetUIAnimations(AnimationPlayer uiAnimation) { cameraAnimations = uiAnimation; }

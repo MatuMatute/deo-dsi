@@ -112,7 +112,6 @@ public partial class ControlBox : PanelContainer
     {
         Mode previousMode = currentMode;
         currentMode = mode;
-        GD.Print(currentMode);
 
         if (currentMode == Mode.dialog)
         {

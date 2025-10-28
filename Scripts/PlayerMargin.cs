@@ -25,6 +25,7 @@ public partial class PlayerMargin : MarginContainer
             if (character != null)
             {
                 CharacterBox currentBox = characterBox.Instantiate() as CharacterBox;
+                character.Connect("ActionFinished", new Callable(GetParent(), "NextAction"));
                 character.AssignBox(currentBox);
                 playerContainer.AddChild(currentBox);
             }
@@ -56,13 +57,11 @@ public partial class PlayerMargin : MarginContainer
         EmitSignal("ActionFinished");
     }
     
-    private async void ExecuteAction(Enemy enemy)
+    private void ExecuteAction(Enemy enemy)
     {
         SlideBack(0);
         GetTree().CallGroup("Enemies", "CannotBeSelected");
         currentSkill.Effect(controlBox, currentCharacter, enemy);
-        await ToSignal(currentSkill, "Finished");
-        EmitSignal("ActionFinished");
     }
 
     private void animationFinished(StringName animName)

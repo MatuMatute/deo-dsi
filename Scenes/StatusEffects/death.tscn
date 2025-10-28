@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://x3x3jxo2oqmv"]
+
+[ext_resource type="Script" uid="uid://c687w6sikkj86" path="res://Scripts/StatusEffect/StatusEffect.cs" id="1_csljt"]
+[ext_resource type="Texture2D" uid="uid://buurfxfqe31ra" path="res://Assets/Battle/Status/death.png" id="2_csljt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hgrt0"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Death" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_hgrt0")
+script = ExtResource("1_csljt")
+priority = 3
+duration = 2
+power = 5
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_csljt")

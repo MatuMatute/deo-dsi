@@ -6,67 +6,78 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehqcl"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="CharacterBox" type="PanelContainer" node_paths=PackedStringArray("currentHP", "maximumHP", "currentSP", "maximumSP", "selectButton")]
-offset_right = 61.0
+[node name="CharacterBox" type="HBoxContainer" node_paths=PackedStringArray("currentHP", "maximumHP", "currentSP", "maximumSP", "selectButton", "statusEffectContainer")]
+offset_right = 116.0
 offset_bottom = 40.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_ehqcl")
 script = ExtResource("1_ehqcl")
-currentHP = NodePath("StatsContainer/HPContainer/Current")
-maximumHP = NodePath("StatsContainer/HPContainer/Maximum")
-currentSP = NodePath("StatsContainer/SPContainer/Current")
-maximumSP = NodePath("StatsContainer/SPContainer/Maximum")
-selectButton = NodePath("Select")
+currentHP = NodePath("Stats/StatsContainer/HPContainer/Current")
+maximumHP = NodePath("Stats/StatsContainer/HPContainer/Maximum")
+currentSP = NodePath("Stats/StatsContainer/SPContainer/Current")
+maximumSP = NodePath("Stats/StatsContainer/SPContainer/Maximum")
+selectButton = NodePath("Stats/Select")
+statusEffectContainer = NodePath("StatusEffectContainer")
 
-[node name="StatsContainer" type="VBoxContainer" parent="."]
+[node name="Stats" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ehqcl")
+
+[node name="StatsContainer" type="VBoxContainer" parent="Stats"]
 layout_mode = 2
 alignment = 1
 
-[node name="HPContainer" type="HBoxContainer" parent="StatsContainer"]
+[node name="HPContainer" type="HBoxContainer" parent="Stats/StatsContainer"]
 layout_mode = 2
 
-[node name="HP" type="Label" parent="StatsContainer/HPContainer"]
+[node name="HP" type="Label" parent="Stats/StatsContainer/HPContainer"]
 layout_mode = 2
 text = "HP"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Current" type="Label" parent="StatsContainer/HPContainer"]
+[node name="Current" type="Label" parent="Stats/StatsContainer/HPContainer"]
 layout_mode = 2
 text = "0"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Separator" type="Label" parent="StatsContainer/HPContainer"]
+[node name="Separator" type="Label" parent="Stats/StatsContainer/HPContainer"]
 layout_mode = 2
 text = "/"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Maximum" type="Label" parent="StatsContainer/HPContainer"]
+[node name="Maximum" type="Label" parent="Stats/StatsContainer/HPContainer"]
 layout_mode = 2
 text = "0"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="SPContainer" type="HBoxContainer" parent="StatsContainer"]
+[node name="SPContainer" type="HBoxContainer" parent="Stats/StatsContainer"]
 layout_mode = 2
 
-[node name="SP" type="Label" parent="StatsContainer/SPContainer"]
+[node name="SP" type="Label" parent="Stats/StatsContainer/SPContainer"]
 layout_mode = 2
 text = "SP"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Current" type="Label" parent="StatsContainer/SPContainer"]
+[node name="Current" type="Label" parent="Stats/StatsContainer/SPContainer"]
 layout_mode = 2
 text = "0"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Separator" type="Label" parent="StatsContainer/SPContainer"]
+[node name="Separator" type="Label" parent="Stats/StatsContainer/SPContainer"]
 layout_mode = 2
 text = "/"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Maximum" type="Label" parent="StatsContainer/SPContainer"]
+[node name="Maximum" type="Label" parent="Stats/StatsContainer/SPContainer"]
 layout_mode = 2
 text = "0"
 label_settings = ExtResource("1_8wd1o")
 
-[node name="Select" type="Button" parent="."]
+[node name="Select" type="Button" parent="Stats"]
 layout_mode = 2
 flat = true
+
+[node name="StatusEffectContainer" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 2

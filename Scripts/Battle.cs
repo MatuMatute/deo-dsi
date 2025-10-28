@@ -46,6 +46,7 @@ public partial class Battle : CanvasLayer
         {
             uiAnimations.Play("CharacterShow");
             controlBox.Grow();
+            controlBox.Connect("DialogBoxFinished", new Callable(this, "BattlerChoice"), 4);
         }
     }
 
@@ -81,7 +82,7 @@ public partial class Battle : CanvasLayer
 
     private void NextAction()
     {
-        if (currentAction < actionOrder.Length)
+        if (currentAction < actionOrder.Length - 1)
         {
             currentAction++;
         }
@@ -90,5 +91,6 @@ public partial class Battle : CanvasLayer
             turn++;
             currentAction = 0;
         }
+        controlBox.Connect("DialogBoxFinished", new Callable(this, "BattlerChoice"), 4);
     }
 }

@@ -2,8 +2,6 @@ using Godot;
 
 public partial class Skill : Resource
 {
-    [Signal]
-    public delegate void FinishedEventHandler();
     [Export]
     protected string name;
     [Export]

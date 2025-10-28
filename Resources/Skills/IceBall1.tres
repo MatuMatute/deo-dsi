@@ -1,11 +1,13 @@
 [gd_resource type="Resource" load_steps=3 format=3 uid="uid://bb0npy68bfmww"]
 
 [ext_resource type="SpriteFrames" uid="uid://bqb0lrcyy3pc4" path="res://Resources/Skills/SpriteFrames/explosion.tres" id="1_nxnhf"]
-[ext_resource type="Script" uid="uid://4byy1f8xu2sy" path="res://Scripts/IceBall.cs" id="1_vlgit"]
+[ext_resource type="Script" uid="uid://4byy1f8xu2sy" path="res://Scripts/Skills/IceBall.cs" id="1_vlgit"]
 
 [resource]
 script = ExtResource("1_vlgit")
 name = "Ice Ball"
 tier = "I"
 power = 3
+element = 2
+cost = 5
 animation = ExtResource("1_nxnhf")

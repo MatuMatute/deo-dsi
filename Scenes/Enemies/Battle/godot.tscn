@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://chvrnv717tick"]
+[gd_scene load_steps=10 format=3 uid="uid://chvrnv717tick"]
 
 [ext_resource type="Texture2D" uid="uid://qlm126vw7xxn" path="res://Assets/Battle/Enemies/godot.png" id="1_xaqu4"]
 [ext_resource type="Script" uid="uid://bonbbkjfoyjdc" path="res://Scripts/Enemy.cs" id="2_p1dmq"]
@@ -9,6 +9,21 @@ bg_color = Color(0.56078434, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvhan"]
 bg_color = Color(0.36320862, 0.6923496, 0.2846982, 1)
+
+[sub_resource type="Animation" id="Animation_xe8mu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_xiell"]
 resource_name = "damaged"
@@ -26,25 +41,26 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_xe8mu"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_p1dmq"]
+resource_name = "defeat"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:self_modulate")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2td51"]
 _data = {
 &"RESET": SubResource("Animation_xe8mu"),
-&"damaged": SubResource("Animation_xiell")
+&"damaged": SubResource("Animation_xiell"),
+&"defeat": SubResource("Animation_p1dmq")
 }
 
 [node name="Godot" type="TextureRect" node_paths=PackedStringArray("effectSprite", "animations")]
@@ -56,8 +72,8 @@ name = "Godot"
 maxHP = 4
 attack = 2
 speed = 3
-elementWeakness = PackedInt32Array(2, 1, 1, 1)
-skills = [ExtResource("3_p1dmq"), null, null, null]
+elementWeakness = PackedInt32Array(1, 2, 1, 1, 1)
+skills = [ExtResource("3_p1dmq")]
 effectSprite = NodePath("Effect")
 animations = NodePath("EnemyAnimations")
 
@@ -90,3 +106,4 @@ libraries = {
 
 [connection signal="pressed" from="Select" to="." method="IsSelected"]
 [connection signal="animation_finished" from="Effect" to="." method="EffectFinished"]
+[connection signal="animation_finished" from="EnemyAnimations" to="." method="AnimationFinished"]

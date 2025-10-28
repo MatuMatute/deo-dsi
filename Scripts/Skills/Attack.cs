@@ -12,17 +12,17 @@ public partial class Attack : Skill
             Enemy enemyTarget = target as Enemy;
             AnimatedSprite2D effect = enemyTarget.PlayEffect(animation);
             await ToSignal(effect, "animation_finished");
-            damage = enemyTarget.Damage(damage, element);
+            enemyTarget.Damage(damage, element, controlBox);
         }
 
         if (target is Character)
         {
             Character characterTarget = target as Character;
-            damage = characterTarget.Damage(damage, element);
-            characterTarget.PlayCameraAnimation("Damage");
+            AnimationPlayer cameraAnimation = characterTarget.PlayCameraAnimation("Damage");
+            await ToSignal(cameraAnimation, "animation_finished");
+            characterTarget.Damage(damage, element, controlBox);
         }
-
-        EmitSignal("Finished");
-        controlBox.AddDialog(target.GetBattlerName() + $" receives {damage} points of damage!", false);
+        
+        user.EmitSignal("ActionFinished");
     }
 }

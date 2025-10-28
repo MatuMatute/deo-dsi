@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class CharacterBox : PanelContainer
+public partial class CharacterBox : HBoxContainer
 {
     [Export]
     private Label currentHP;
@@ -12,6 +12,8 @@ public partial class CharacterBox : PanelContainer
     private Label maximumSP;
     [Export]
     private Button selectButton;
+    [Export]
+    private GridContainer statusEffectContainer;
 
     public void UpdateLabels(Character character)
     {
@@ -19,6 +21,18 @@ public partial class CharacterBox : PanelContainer
         maximumHP.Set("text", character.GetMaxHP().ToString());
         currentSP.Set("text", character.GetSP().ToString());
         maximumSP.Set("text", character.GetMaxSP().ToString());
+    }
+
+    public void UpdateStatusEffects(StatusEffect[] statusEffects)
+    {
+        
+        foreach (StatusEffect statusEffect in statusEffects)
+        {
+            if (statusEffect != null)
+            {
+                statusEffectContainer.AddChild(statusEffect);
+            }
+        }
     }
 
     public void ShowButton() { selectButton.Set("visible", true); }

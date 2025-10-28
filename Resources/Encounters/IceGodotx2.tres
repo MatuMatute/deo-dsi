@@ -6,4 +6,4 @@
 
 [resource]
 script = ExtResource("3_co5xq")
-EnemyTroop = [ExtResource("2_kb71f"), ExtResource("1_we4uq"), ExtResource("2_kb71f"), ExtResource("1_we4uq"), null, null]
+EnemyTroop = [ExtResource("2_kb71f"), ExtResource("1_we4uq"), null, null]
