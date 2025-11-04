@@ -14,5 +14,5 @@ public partial class Skill : Resource
     protected int cost;
     [Export]
     protected SpriteFrames animation;
-    virtual public async void Effect(ControlBox controlBox, Battler user, Battler target) {}
+    virtual public async void Effect(ControlBox controlBox, IBattler user, IBattler target) {}
 }

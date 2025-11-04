@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Linq;
 
 public partial class ControlBox : PanelContainer
@@ -47,7 +48,7 @@ public partial class ControlBox : PanelContainer
                         else
                         {
                             dialogLabel.Hide();
-                            EmitSignal(SignalName.DialogBoxFinished);
+                            EmitSignal("DialogBoxFinished");
                         }
                         break;
                     case State.writing:
@@ -64,6 +65,9 @@ public partial class ControlBox : PanelContainer
                         }
                         break;
                 }
+                break;
+            case Mode.skill:
+                
                 break;
         }
     }
@@ -91,7 +95,7 @@ public partial class ControlBox : PanelContainer
         }
     }
 
-    public void ShowDialog()
+    private void ShowDialog()
     {
         currentState = State.writing;
         dialogLabel.Text = dialogQueue.First();
@@ -113,9 +117,14 @@ public partial class ControlBox : PanelContainer
         Mode previousMode = currentMode;
         currentMode = mode;
 
-        if (currentMode == Mode.dialog)
+        switch (currentMode)
         {
-            currentState = State.ready;
+            case Mode.dialog:
+                currentState = State.ready;
+                break;
+            case Mode.skill:
+                
+                break;
         }
     }
 }

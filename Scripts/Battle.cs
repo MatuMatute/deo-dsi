@@ -1,8 +1,10 @@
 using Godot;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 public partial class Battle : CanvasLayer
 {
+    private enum Result {lose, victory}
     [Export]
     private ControlBox controlBox;
     [Export]
@@ -14,7 +16,7 @@ public partial class Battle : CanvasLayer
     [Export]
     private Troop Troop;
     private Enemy[] enemyTroop;
-    private Battler[] actionOrder;
+    private IBattler[] actionOrder;
     private ushort turn;
     private byte currentAction = 0;
 
@@ -50,9 +52,9 @@ public partial class Battle : CanvasLayer
         }
     }
 
-    private Battler[] SortActions()
+    private IBattler[] SortActions()
     {
-        Battler[] actionOrganizer;
+        IBattler[] actionOrganizer;
         actionOrganizer = Global.Instance.GetParty();
         actionOrganizer = actionOrganizer.Concat(enemyTroop).ToArray();
         actionOrganizer = actionOrganizer.Where(b => b != null).ToArray();
@@ -64,6 +66,18 @@ public partial class Battle : CanvasLayer
 
     private void BattlerChoice()
     {
+        if (Global.Instance.IsPartyDefeated())
+        {
+            EndBattle(Result.lose);
+            return;
+        }
+
+        if (AreEnemiesDefeated())
+        {
+            EndBattle(Result.victory);
+            return;
+        }
+
         actionOrder = SortActions();
 
         if (actionOrder[currentAction] is Character)
@@ -82,7 +96,7 @@ public partial class Battle : CanvasLayer
 
     private void NextAction()
     {
-        if (currentAction < actionOrder.Length - 1)
+        if (currentAction < actionOrder.GetLength(0) - 1)
         {
             currentAction++;
         }
@@ -92,5 +106,46 @@ public partial class Battle : CanvasLayer
             currentAction = 0;
         }
         controlBox.Connect("DialogBoxFinished", new Callable(this, "BattlerChoice"), 4);
+    }
+
+    private void EndBattle(Result result)
+    {
+        switch (result)
+        {
+            case Result.lose:
+                controlBox.AddDialog("El equipo ha perdido.", false);
+                break;
+            case Result.victory:
+                controlBox.AddDialog("¡El equipo ha ganado!", false);
+                break;
+        }
+
+    }
+
+    private int EnemiesInTroop()
+    {
+        int Amount = 0;
+
+        for (int i = 0; i < enemyTroop.GetLength(0); i++)
+        {
+            if (enemyTroop[i] != null)
+                Amount++;
+        }
+        return Amount;
+    }
+    
+    private bool AreEnemiesDefeated()
+    {
+        int DefeatedEnemies = 0;
+
+        for (int i = 0; i < EnemiesInTroop(); i++)
+        {
+            if (enemyTroop[i].CheckDeath())
+                DefeatedEnemies++;
+        }
+
+        if (DefeatedEnemies == EnemiesInTroop())
+            return true;
+        return false;
     }
 }

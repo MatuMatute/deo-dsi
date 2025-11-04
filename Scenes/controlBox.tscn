@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d21l48sf31pkd"]
+[gd_scene load_steps=6 format=3 uid="uid://d21l48sf31pkd"]
 
 [ext_resource type="LabelSettings" uid="uid://cypn2mie4f5be" path="res://Resources/LabelSettings/dialog_label.tres" id="1_85mo8"]
 [ext_resource type="Script" uid="uid://dgdnmnyv75cm2" path="res://Scripts/ControlBox.cs" id="1_rdsx8"]
+[ext_resource type="LabelSettings" uid="uid://bvwgv45jgjagv" path="res://Resources/LabelSettings/Character_info.tres" id="3_k7ddr"]
+[ext_resource type="LabelSettings" uid="uid://diujef84lfca4" path="res://Resources/LabelSettings/effect_description.tres" id="4_2t6j7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1otgo"]
 bg_color = Color(0, 0, 0, 1)
@@ -39,3 +41,32 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = ">"
 label_settings = ExtResource("1_85mo8")
+
+[node name="ContentContainer" type="HSplitContainer" parent="ControlMargin"]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Grid" type="GridContainer" parent="ControlMargin/ContentContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+columns = 5
+
+[node name="InfoContainer" type="VBoxContainer" parent="ControlMargin/ContentContainer"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="ControlMargin/ContentContainer/InfoContainer"]
+layout_mode = 2
+text = "Asado"
+label_settings = ExtResource("3_k7ddr")
+horizontal_alignment = 1
+text_overrun_behavior = 2
+
+[node name="Effect" type="Label" parent="ControlMargin/ContentContainer/InfoContainer"]
+layout_mode = 2
+text = "Asado"
+label_settings = ExtResource("4_2t6j7")
+
+[node name="Description" type="Label" parent="ControlMargin/ContentContainer/InfoContainer"]
+layout_mode = 2
+text = "Asado"
+label_settings = ExtResource("4_2t6j7")

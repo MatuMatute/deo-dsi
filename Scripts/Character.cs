@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using Godot;
 
-public partial class Character : Battler
+public partial class Character : Node, IBattler
 {
+    [Signal]
+    public delegate void ActionFinishedEventHandler();
     private string name;
     private Color color;
     private byte level;
@@ -16,10 +18,11 @@ public partial class Character : Battler
     private int attack;
     private int defense;
     private int speed;
+    private readonly StatusEffect Death = GD.Load<PackedScene>("res://Scenes/StatusEffects/death.tscn").Instantiate() as StatusEffect;
     private StatusEffect[] statusEffects = new StatusEffect[4];
     private Skill[] skills = new Skill[10];
     // [No elemental, Fuego, Agua, Aire, Tierra]
-    private int[] elementWeakness = new int[5];
+    private int[] elementWeakness;
     private CharacterBox characterBox;
     private AnimationPlayer cameraAnimations;
     
@@ -57,7 +60,7 @@ public partial class Character : Battler
         {
             hp = 0;
             controlBox.AddDialog(name + " has been defeated!", false);
-            ApplyStatusEffect(GD.Load<PackedScene>("res://Scenes/StatusEffects/death.tscn").Instantiate() as StatusEffect);
+            ApplyStatusEffect(Death);
         }
 
         characterBox.UpdateLabels(this);
@@ -81,8 +84,29 @@ public partial class Character : Battler
         characterBox.UpdateStatusEffects(statusEffects);
     }
 
+    public bool CheckDeath()
+    {
+        return CheckStatus(Death);
+    }
+
+    private bool CheckStatus(StatusEffect statusEffect)
+    {
+        for (int i = 0; i < statusEffects.GetLength(0) - 1; i++)
+        {
+            if (statusEffects[i] == statusEffect)
+                return true;
+        }
+        return false;
+    }
+
     public void Action(ControlBox controlBox, PlayerMargin playerMargin)
     {
+        if (CheckStatus(Death))
+        {
+            EmitSignal("ActionFinished");
+            return;
+        }
+
         controlBox.AddDialog(name + " está pensando en qué hacer...", true);
         playerMargin.SetCurrentCharacter(this);
         playerMargin.ShowCommands();
@@ -103,12 +127,12 @@ public partial class Character : Battler
 
     public void SetUIAnimations(AnimationPlayer uiAnimation) { cameraAnimations = uiAnimation; }
 
-    public override string GetBattlerName() { return name; }
+    public string GetBattlerName() { return name; }
     public int GetHP() { return hp; }
     public int GetMaxHP() { return maxHP; }
     public int GetSP() { return sp; }
     public int GetMaxSP() { return maxSP; }
-    public override int GetAttack() { return attack; }
-    public override int GetSpeed() { return speed; }
+    public int GetAttack() { return attack; }
+    public int GetSpeed() { return speed; }
     public Skill GetSkill(int index) { return skills[index]; }
 }

@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using Godot;
 
-public partial class Enemy : Battler
+public partial class Enemy : Node, IBattler
 {
+    [Signal]
+    public delegate void ActionFinishedEventHandler();
     [Signal]
     public delegate void EnemySelectedEventHandler(Enemy enemy);
     [Export]
@@ -34,6 +36,7 @@ public partial class Enemy : Battler
 
     private ProgressBar HealthBar;
     private Button selectButton;
+    private readonly StatusEffect Death = GD.Load<PackedScene>("res://Scenes/StatusEffects/death.tscn").Instantiate() as StatusEffect;
 
     public override void _Ready()
     {
@@ -82,11 +85,18 @@ public partial class Enemy : Battler
                 statusEffects[index] = statusEffect;
             }
         }
+        GD.Print(statusEffects);
     }
 
     public void Action(ControlBox controlBox)
     {
-        Character[] Party = Global.Instance.GetParty().Where(b => b != null).ToArray();
+        if (CheckStatus(Death))
+        {
+            EmitSignal("ActionFinished");
+            return;
+        }
+
+        Character[] Party = Global.Instance.GetParty();
 
         if (skills.Length > 1)
         {
@@ -95,10 +105,9 @@ public partial class Enemy : Battler
         else
         {
             Character target;
-            if (Party.Length > 1)
+            if (Global.Instance.CharactersInParty() > 1)
             {
                 target = Party.MinBy(b => b.GetHP());
-
             }
             else
             {
@@ -126,6 +135,21 @@ public partial class Enemy : Battler
         return effectSprite;
     }
 
+    public bool CheckDeath()
+    {
+        return CheckStatus(Death);
+    }
+
+    private bool CheckStatus(StatusEffect statusEffect)
+    {
+        for (int i = 0; i < statusEffects.GetLength(0) - 1; i++)
+        {
+            if (statusEffects[i] == statusEffect)
+                return true;
+        }
+        return false;
+    }
+    
     private void EffectFinished()
     {
         effectSprite.SpriteFrames = null;
@@ -137,7 +161,7 @@ public partial class Enemy : Battler
         if (animName == "defeat")
         {
             selectButton.Set("disabled", true);
-            ApplyStatusEffect(GD.Load<PackedScene>("res://Scenes/StatusEffects/death.tscn").Instantiate() as StatusEffect);
+            ApplyStatusEffect(Death);
         }
     }
 
@@ -146,7 +170,7 @@ public partial class Enemy : Battler
         EmitSignal("EnemySelected", this);
     }
 
-    public override string GetBattlerName() { return name; }
-    public override int GetSpeed() { return speed; }
-    public override int GetAttack() { return attack; }
+    public string GetBattlerName() { return name; }
+    public int GetSpeed() { return speed; }
+    public int GetAttack() { return attack; }
 }

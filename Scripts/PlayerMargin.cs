@@ -51,11 +51,6 @@ public partial class PlayerMargin : MarginContainer
         animationPlayer.Play("HideCommands");
         this.transition = (Transition)transition;
     }
-
-    public void ActionHasFinished()
-    {
-        EmitSignal("ActionFinished");
-    }
     
     private void ExecuteAction(Enemy enemy)
     {
@@ -88,12 +83,19 @@ public partial class PlayerMargin : MarginContainer
         controlBox.AddDialog("To which enemy?", true);
     }
 
+    private void skillButtonPressed()
+    {
+        SlideBack(1);
+        
+    }
+
     private void backButtonPressed()
     {
         SlideBack(2);
         currentSkill = null;
         GetTree().CallGroup("Enemies", "CannotBeSelected");
     }
+
     public void SetCurrentCharacter(Character character) { currentCharacter = character; }
     public void PassControlBox(ControlBox controlBox) { this.controlBox = controlBox; }
     public void PassUIAnimations(AnimationPlayer uiAnimations)

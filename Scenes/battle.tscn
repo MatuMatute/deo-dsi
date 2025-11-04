@@ -182,7 +182,7 @@ offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "0.1.5"
+text = "0.1.6"
 
 [connection signal="ActionFinished" from="PlayerMargin" to="." method="NextAction"]
 [connection signal="animation_finished" from="UIAnimation" to="." method="UIAnimationFinished"]

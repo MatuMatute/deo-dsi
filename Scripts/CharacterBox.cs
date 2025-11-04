@@ -25,7 +25,6 @@ public partial class CharacterBox : HBoxContainer
 
     public void UpdateStatusEffects(StatusEffect[] statusEffects)
     {
-        
         foreach (StatusEffect statusEffect in statusEffects)
         {
             if (statusEffect != null)

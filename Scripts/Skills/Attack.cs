@@ -2,7 +2,7 @@ using Godot;
 
 public partial class Attack : Skill
 {
-    override public async void Effect(ControlBox controlBox, Battler user, Battler target)
+    override public async void Effect(ControlBox controlBox, IBattler user, IBattler target)
     {
         int damage = user.GetAttack() + power;
         controlBox.AddDialog(user.GetBattlerName() + " attacks " + target.GetBattlerName(), true);
@@ -22,7 +22,11 @@ public partial class Attack : Skill
             await ToSignal(cameraAnimation, "animation_finished");
             characterTarget.Damage(damage, element, controlBox);
         }
-        
-        user.EmitSignal("ActionFinished");
+
+        if (user is Node)
+        {
+            Node nodeUser = user as Node;
+            nodeUser.EmitSignal("ActionFinished");
+        }
     }
 }
